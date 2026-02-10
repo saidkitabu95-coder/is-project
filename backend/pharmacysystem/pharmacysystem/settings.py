@@ -30,6 +30,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+# Temporary for dev: allow all origins to ease frontend testing. Remove in production.
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Application definition
 
@@ -40,11 +43,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'management',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,11 +94,16 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pharmacy_db',
         'USER': 'postgres',
-        'PASSWORD': 'sajad',
-        'HOST': 'localhost',
+        'PASSWORD': 'sajad', 
+        'HOST': '127.0.0.1',
         'PORT': '5432',
+        'CONN_MAX_AGE': 0,
+        'DISABLE_SERVER_SIDE_CURSORS': True,  
     }
 }
+
+
+
 
 
 # Password validation

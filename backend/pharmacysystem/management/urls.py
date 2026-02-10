@@ -1,16 +1,34 @@
-from xml.etree.ElementInclude import include
 from rest_framework.routers import DefaultRouter
-from .views import LoginViewSet
+from django.urls import path
+from .views import RegisterView
+from .views import  LoginAPIView
 from .views import StoreViewSet
-from .views import SalesViewSet
+from .views import SaleViewSet
+from .views import PaymentViewSet
+
 
 
 router = DefaultRouter()
-router.register('login', LoginViewSet)
-router.register('store', StoreViewSet)
-router.register('sales', SalesViewSet)
+router.register("store", StoreViewSet, basename="store")
+router.register("sale", SaleViewSet, basename="sales")
+router.register("payment", PaymentViewSet, basename="payment")
 
-urlpatterns =  router.urls
+
+
+
+
+
+urlpatterns = [
+    path("register/", RegisterView.as_view(), name="register"),
+    path("login/", LoginAPIView.as_view(), name="login"),
+    path("api/store/", StoreViewSet.as_view({"get": "list"}), name="store-list"),
+    path("api/sale/", SaleViewSet.as_view({"get": "list"}), name="sales-list"),
+    path("api/payment/", PaymentViewSet.as_view({"get": "list"}), name="payment-list"),
+] + router.urls
+
+
+
+
     
     #path('login/', login),
    # path('store/', Store),
