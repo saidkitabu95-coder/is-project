@@ -11,10 +11,10 @@ function Register() {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8080/api/register/", {
+      "http://127.0.0.1:8080/api/register/", {
         username,
         password,
-      });
+      };
 
       setMessage("Registered successfully! Redirecting to login...");
       setTimeout(() => {

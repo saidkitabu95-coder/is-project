@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
@@ -8,72 +7,47 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import  RefreshToken
+from rest_framework.authtoken.models import Token
 from rest_framework import viewsets
 from .models import Store,Payment,Sale
 from .serializers import StoreSerializer,SaleSerializer,PaymentSerializer
 
 
 
-#from rest_framework.decorators import *
-#from rest_framework.response import Response
-#from django.contrib.auth import authenticate, login
-#from .models import Store,Sales,login
-#from .serializers import StoreSerializer,SaleSerializer
-#from rest_framework import viewsets
-#from .serializers import loginSerializer
-
-
-
-# Login API
-#@api_view(['POST'])
-#def login(request):
- #   username = request.data.get("username")
-  #  password = request.data.get("password")
-   # user = authenticate(username=username, password=password)
-    #if user:
-     #   login(request, user)
-      #  return Response({"status": "success", "message": "Login successful", "username": user.username})
-    #else:
-     #   return Response({"status": "error", "message": "Invalid credentials"}, status=401)
-
-# Store API
-#@api_view(['GET'])
-#def Store(request):
- #   stores = Store.objects.all()
-  #  serializer = StoreSerializer(stores, many=True)
-   # return Response(serializer.data)
-
-
-# Sales API
-#@api_view(['GET'])
-#def Sales(request):
- #   sales = Sales.objects.all()
-  #  serializer = SaleSerializer(sales, many=True)
-   # return Response(serializer.data)
-
-# Create your views here.
-#class LoginViewSet(viewsets.ModelViewSet):
- #   queryset = Login.objects.all()
-  #  serializer_class = LoginSerializer
   
 class RegisterView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
 
-        if User.objects.filter(username=username).exists():
+        if not username or not password:
             return Response(
-                {"error": "User already exists"},
+                {"error": "Both username and password are required"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        User.objects.create_user(username=username, password=password)
+        if User.objects.filter(username=username).exists():
+            return Response(
+                {"error": "Username already exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        return Response(
-            {"message": "User registered successfully"},
-            status=status.HTTP_201_CREATED
-        )
+        try:
+            user = User.objects.create_user(
+                username=username,
+                password=password
+            )
+            return Response(
+                {"message": "User registered successfully", "user_id": user.id},
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 
 class LoginAPIView(APIView):
@@ -87,22 +61,21 @@ class LoginAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        User = authenticate(username=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
-        if not User:
+        if user is None:
             return Response(
                 {"error": "Invalid credentials"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        
-        refresh = RefreshToken.for_user(User)
+        refresh = RefreshToken.for_user(user)
 
         return Response({
             "access": str(refresh.access_token),
             "refresh": str(refresh),
-            "username": User.username
-        })
+            "username": user.username
+        }, status=status.HTTP_200_OK)
 
 
 

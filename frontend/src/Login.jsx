@@ -11,10 +11,10 @@ function Login() {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8080/api/login/", {
+      "http://127.0.0.1:8080/api/login/", {
         username,
         password,
-      });
+      };
 
       setMessage("Login successful");
     } catch (error) {
