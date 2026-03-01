@@ -1,32 +1,83 @@
-.register-container {
+.register-page {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  padding: 24px;
+  background: radial-gradient(circle at top, #f5f1e6 0%, #f0f6ff 40%, #eef3f7 100%);
+}
+
+.register-card {
+  width: min(420px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid #e3e7ed;
+  box-shadow: 0 18px 40px rgba(18, 30, 50, 0.12);
+}
+
+.register-title {
+  margin-bottom: 6px;
+  font-size: 24px;
+  color: #1f2d3d;
+}
+
+.register-subtitle {
+  margin-bottom: 18px;
+  color: #5a6b7c;
+  font-size: 13px;
 }
 
 .register-form {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  gap: 12px;
 }
 
-.register-form input,
-.register-form button {
-  padding: 10px;
-  margin-bottom: 10px;
-  font-size: 16px;
+.register-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #cfd7e3;
+  font-size: 14px;
+  background: #f7f9fc;
 }
 
-.message {
-  margin-top: 10px;
-  color: green;
-  font-weight: bold;
-}
-.error {
-  margin-top: 10px;
-  color: red;
-  font-weight: bold;
+.register-input:focus {
+  outline: none;
+  border-color: #4969f2;
+  box-shadow: 0 0 0 3px rgba(73, 105, 242, 0.15);
+  background: #fff;
 }
 
+.register-btn {
+  margin-top: 4px;
+  padding: 11px 12px;
+  border: none;
+  border-radius: 10px;
+  background: #1f2d3d;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background: #0f1721;
+}
+
+.register-message {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #c62828;
+}
+
+.register-link {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #5a6b7c;
+}
+
+.register-link a {
+  color: #1f2d3d;
+  text-decoration: none;
+  font-weight: 600;
+}

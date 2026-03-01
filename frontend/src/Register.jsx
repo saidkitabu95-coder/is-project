@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "./api";
-import "./auth.css";
+import "./Register.css";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -37,17 +37,19 @@ function Register() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h2>Register</h2>
+    <div className="register-page">
+      <div className="register-card">
+        <h2 className="register-title">Create Account</h2>
+        <p className="register-subtitle">Set up your pharmacy access</p>
 
-        <form onSubmit={handleRegister}>
+        <form className="register-form" onSubmit={handleRegister}>
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="register-input"
           />
 
           <input
@@ -56,6 +58,7 @@ function Register() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            className="register-input"
           />
 
           <input
@@ -64,6 +67,7 @@ function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="register-input"
           />
 
           <input
@@ -72,14 +76,15 @@ function Register() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="register-input"
           />
 
-          <button type="submit">Register</button>
+          <button className="register-btn" type="submit">Register</button>
         </form>
 
-        {message && <p className="message">{message}</p>}
+        {message && <p className="register-message">{message}</p>}
 
-        <div className="auth-link">
+        <div className="register-link">
           <p>
             Already have an account? <a href="/login">Login</a>
           </p>
