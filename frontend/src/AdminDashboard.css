@@ -16,8 +16,8 @@
 }
 
 .admin-refresh-btn {
-  background: #2c3e50;
-  color: #fff;
+  background: greenyellow;
+  color: goldenrod;
   border: none;
   border-radius: 6px;
   padding: 8px 14px;
@@ -29,7 +29,7 @@
 }
 
 .admin-error {
-  color: #b71c1c;
+  color: red;
   margin-bottom: 12px;
 }
 
@@ -41,8 +41,8 @@
 }
 
 .admin-card {
-  background: #fff;
-  border: 1px solid #d9e1e8;
+  background: paleturquoise;
+  border: 1px solid pink;
   border-radius: 10px;
   padding: 14px;
 }
@@ -50,17 +50,17 @@
 .admin-card h3 {
   font-size: 14px;
   margin-bottom: 8px;
-  color: #2f4050;
+  color: green;
 }
 
 .admin-card p {
   font-size: 24px;
   font-weight: 700;
-  color: #1c2733;
+  color: plum;
 }
 
 .admin-card-alert {
-  border-color: #ffccbc;
+  border-color: purple;
   background: #fff7f3;
 }
 
