@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import Store from "./Store";
 import Sales from "./Sales";
 import Payment from "./Payment";
-import "./dashboard.css";
+import "./Dashboard.css";
 import { useEffect, useState } from "react";
 
 function Dashboard() {

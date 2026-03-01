@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import api from "./api";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import "./dashboard.css";
+import "./Dashboard.css";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
