@@ -111,13 +111,18 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get("DB_NAME", "pharmacy_db"),
         'USER': os.environ.get("DB_USER", "postgres"),
-        'PASSWORD': os.environ.get("DB_PASSWORD", "sajad"), 
+        'PASSWORD': os.environ.get("DB_PASSWORD", "sajad"),
         'HOST': os.environ.get("DB_HOST", "127.0.0.1"),
         'PORT': os.environ.get("DB_PORT", "5432"),
         'CONN_MAX_AGE': 0,
-        'DISABLE_SERVER_SIDE_CURSORS': True,  
+        'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    import dj_database_url
+    DATABASES["default"] = dj_database_url.parse(DATABASE_URL, conn_max_age=0, ssl_require=False)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
