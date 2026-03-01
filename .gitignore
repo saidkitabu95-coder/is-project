@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+
+# Project envs
+backend/myvenv/
+backend/pharmacysystem/sq.postegress
+
+# Node
+frontend/node_modules/
