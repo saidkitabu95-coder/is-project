@@ -1,7 +1,10 @@
 import axios from "axios";
 
-// Base URL can be overridden by setting VITE_API_URL in .env (e.g. VITE_API_URL="http://127.0.0.1:8080/api")
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8080/api";
+const DEFAULT_API_BASE = import.meta.env.DEV
+  ? "http://127.0.0.1:8080/api"
+  : "https://is-project2.onrender.com/api";
+
+const API_BASE = (import.meta.env.VITE_API_URL || DEFAULT_API_BASE).replace(/\/+$/, "");
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -62,4 +65,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-

@@ -40,7 +40,7 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL", "").strip()
 CORS_ALLOWED_ORIGINS = _split_env_list(
     os.environ.get(
         "CORS_ALLOWED_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173",
+        "http://localhost:5173,http://127.0.0.1:5173,https://is-project-bffv.vercel.app",
     )
 )
 if FRONTEND_URL:
@@ -49,7 +49,7 @@ if FRONTEND_URL:
 CORS_ALLOWED_ORIGIN_REGEXES = _split_env_list(
     os.environ.get(
         "CORS_ALLOWED_ORIGIN_REGEXES",
-        r"^https?://localhost(:\d+)?$,^https?://127\.0\.0\.1(:\d+)?$",
+        r"^https?://localhost(:\d+)?$,^https?://127\.0\.0\.1(:\d+)?$,^https://.*\.vercel\.app$",
     )
 )
 
@@ -61,7 +61,7 @@ CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", "False").lower
 CSRF_TRUSTED_ORIGINS = _split_env_list(
     os.environ.get(
         "CSRF_TRUSTED_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173",
+        "http://localhost:5173,http://127.0.0.1:5173,https://is-project-bffv.vercel.app",
     )
 )
 if FRONTEND_URL:
@@ -218,6 +218,8 @@ if find_spec("whitenoise") is not None:
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 
 
 
