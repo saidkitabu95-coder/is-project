@@ -46,6 +46,15 @@ CORS_ALLOWED_ORIGINS = _split_env_list(
 if FRONTEND_URL:
     CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
 
+CORS_ALLOWED_ORIGIN_REGEXES = _split_env_list(
+    os.environ.get(
+        "CORS_ALLOWED_ORIGIN_REGEXES",
+        r"^https?://localhost(:\d+)?$,^https?://127\.0\.0\.1(:\d+)?$",
+    )
+)
+
+CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS", "True").lower() == "true"
+
 # In production this should be False (set to True only for local testing).
 CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", "False").lower() == "true"
 
@@ -209,6 +218,8 @@ if find_spec("whitenoise") is not None:
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 
 
 
