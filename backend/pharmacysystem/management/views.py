@@ -10,18 +10,35 @@ from .serializers import LoginActivitySerializer, PaymentSerializer, SalesSerial
 
 User = get_user_model()
 
+
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        email = request.data.get("email")
-        username = request.data.get("username")
+        email = (request.data.get("email") or "").strip()
+        username = (request.data.get("username") or request.data.get("name") or "").strip()
         password = request.data.get("password")
-        confirm_password = request.data.get("confirm_password")
+        confirm_password = request.data.get("confirm_password") or request.data.get("confirmPassword")
 
-        if not email or not username or not password:
+        if not password:
             return Response(
-                {"error": "email, username, and password are required"},
+                {"error": "password is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Allow frontend that sends email without username by deriving a username.
+        if not username and email:
+            base_username = email.split("@", 1)[0][:150] or "user"
+            username = base_username
+            suffix = 1
+            while User.objects.filter(username=username).exists():
+                candidate = f"{base_username}{suffix}"
+                username = candidate[:150]
+                suffix += 1
+
+        if not email or not username:
+            return Response(
+                {"error": "email and username are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -50,7 +67,12 @@ class RegisterView(APIView):
                 password=password,
             )
             return Response(
-                {"message": "User registered successfully", "user_id": user.id},
+                {
+                    "message": "User registered successfully",
+                    "user_id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                },
                 status=status.HTTP_201_CREATED,
             )
         except Exception as e:
@@ -61,16 +83,23 @@ class LoginAPIView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        username = request.data.get("username")
+        username = (request.data.get("username") or "").strip()
+        email = (request.data.get("email") or "").strip()
         password = request.data.get("password")
 
-        if not username or not password:
+        if not password or (not username and not email):
             return Response(
-                {"error": "username and password are required"},
+                {"error": "username/email and password are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        user = authenticate(request, username=username, password=password)
+        login_username = username
+        if not login_username and email:
+            user_by_email = User.objects.filter(email__iexact=email).first()
+            if user_by_email:
+                login_username = user_by_email.username
+
+        user = authenticate(request, username=login_username, password=password)
 
         if user is None:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -78,13 +107,20 @@ class LoginAPIView(APIView):
         LoginActivity.objects.create(user=user, username=user.username)
 
         refresh = RefreshToken.for_user(user)
+        access = str(refresh.access_token)
+        refresh_token = str(refresh)
         is_admin = bool(user.is_staff or user.is_superuser or user.username.lower() == "admin")
 
         return Response(
             {
-                "access": str(refresh.access_token),
-                "refresh": str(refresh),
+                "access": access,
+                "refresh": refresh_token,
+                # Compatibility aliases for different frontend key names.
+                "access_token": access,
+                "refresh_token": refresh_token,
+                "token": access,
                 "username": user.username,
+                "email": user.email,
                 "is_admin": is_admin,
             },
             status=status.HTTP_200_OK,
